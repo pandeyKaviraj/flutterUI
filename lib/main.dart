@@ -9,47 +9,6 @@ final List<String> imgList = [
   'https://images.unsplash.com/photo-1522205408450-add114ad53fe?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=368f45b0888aeb0b7b08e3a1084d3ede&auto=format&fit=crop&w=1950&q=80',
   'https://images.unsplash.com/photo-1519125323398-675f0ddb6308?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=94a1e718d89ca60a6337a6008341ca50&auto=format&fit=crop&w=1950&q=80'
 ];
-final List<Widget> imageSliders = imgList
-    .map((item) => Container(
-          child: Container(
-            margin: EdgeInsets.all(5.0),
-            child: ClipRRect(
-                borderRadius: BorderRadius.all(Radius.circular(5.0)),
-                child: Stack(
-                  children: <Widget>[
-                    Image.asset(item, fit: BoxFit.cover, width: 1000.0),
-                    Positioned(
-                      bottom: 0.0,
-                      left: 0.0,
-                      right: 0.0,
-                      child: Container(
-                        decoration: BoxDecoration(
-                          gradient: LinearGradient(
-                            colors: [
-                              Color.fromARGB(200, 0, 0, 0),
-                              Color.fromARGB(0, 0, 0, 0)
-                            ],
-                            begin: Alignment.bottomCenter,
-                            end: Alignment.topCenter,
-                          ),
-                        ),
-                        padding: EdgeInsets.symmetric(
-                            vertical: 10.0, horizontal: 20.0),
-                        child: Text(
-                          'No. ${imgList.indexOf(item)} image',
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 20.0,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
-                )),
-          ),
-        ))
-    .toList();
 
 void main() {
   runApp(MyApp());
@@ -63,7 +22,7 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   final controller = PageController(viewportFraction: 0.8, keepPage: true);
-  int current = 0;
+  int currentIndex = 0;
   final CarouselController _controller = CarouselController();
   var FruitList = [
     'Maths,science concepts & more',
@@ -79,7 +38,8 @@ class _MyAppState extends State<MyApp> {
           body: Column(
             children: [
               Container(
-                padding: EdgeInsets.only(top: 10),
+                alignment: Alignment.topCenter,
+                padding: EdgeInsets.only(top: 10, bottom: 30),
                 child: AutoSizeText(
                   'Subscription Plan',
                   textAlign: TextAlign.center,
@@ -91,40 +51,75 @@ class _MyAppState extends State<MyApp> {
                   maxLines: 1,
                 ),
               ),
-              Expanded(
+              Container(
+                height: 200,
                 child: CarouselSlider.builder(
-                  itemCount: imgList.length,
                   carouselController: _controller,
+                  itemCount: imgList.length,
                   options: CarouselOptions(
-                      aspectRatio: 2.0,
-                      enlargeCenterPage: true,
-                      autoPlay: true,
+                      viewportFraction: 1,
                       onPageChanged: (index, reason) {
                         setState(() {
-                          current = index;
+                          currentIndex = index;
                         });
                       }),
-                  itemBuilder: (ctx, index, realIdx) {
+                  itemBuilder: (
+                    context,
+                    index,
+                    realIdx,
+                  ) {
                     return Container(
-                      child: Text(index.toString()),
+                      height: 170,
+                      child: Column(
+                        children: [
+                          Container(
+                            child: Image.network(
+                              imgList[index],
+                              fit: BoxFit.cover,
+                              height: 150,
+                              alignment: Alignment.bottomCenter,
+                            ),
+                          ),
+                          Container(
+                            alignment: Alignment.bottomCenter,
+                            margin: EdgeInsets.only(top: 15),
+                            child: AutoSizeText.rich(
+                              TextSpan(text: FruitList[index]),
+                              style: TextStyle(
+                                fontFamily: 'roboto',
+                                fontSize: 18,
+                                fontWeight: FontWeight.normal,
+                                color: Colors.black,
+                              ),
+                              maxLines: 1,
+                            ),
+                          ),
+                        ],
+                      ),
+                      //Here we can display titles
                     );
                   },
                 ),
               ),
-              SmoothPageIndicator(
-                  // PageController
-                  count: 3,
-                  // activeIndex:,
-                  controller: controller,
-                  effect: WormEffect(
-                      paintStyle: PaintingStyle.stroke,
-                      strokeWidth: 5,
-                      dotColor: Colors.white,
-                      dotHeight: 16,
-                      dotWidth: 16,
-                      type: WormType.thin,
-                      activeDotColor: Colors.orange), // your preferred effect
-                  onDotClicked: (index) {}),
+              Container(
+                margin: EdgeInsets.only(bottom: 20),
+                child: AnimatedSmoothIndicator(
+                    activeIndex: currentIndex,
+                    count: imgList.length,
+                    effect: WormEffect(
+                        paintStyle: PaintingStyle.stroke,
+                        dotColor: Colors.grey,
+                        type: WormType.normal,
+                        dotHeight: 10,
+                        spacing: 8,
+                        dotWidth: 10,
+                        activeDotColor: Colors.orange),
+                    //Imp Code to revisit
+                    onDotClicked: (index) {
+                      //_controller.animateToPage can also be used
+                      _controller.jumpToPage(index);
+                    }),
+              ),
 
               Container(
                 child: AutoSizeText.rich(
@@ -155,16 +150,30 @@ class _MyAppState extends State<MyApp> {
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(8),
                       ),
-                      child: TextButton(
-                        child: Column(
-                          children: [
-                            Text('12'),
-                            Text('months'),
-                            Text('₹499'),
-                            Text('(or₹1/day)'),
-                          ],
-                        ),
-                        onPressed: () {},
+                      child: Stack(
+                        children: [
+                          Container(
+                            width: 100,
+                            height: 14,
+                            decoration: BoxDecoration(
+                              shape: BoxShape.rectangle,
+                              color: Colors.black,
+                              borderRadius: BorderRadius.circular(4),
+                            ),
+                            child: AutoSizeText.rich(
+                              TextSpan(
+                                text: ('RECOMMENDED'),
+                              ),
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 0.05,
+                              ),
+                              textAlign: TextAlign.right,
+                              maxLines: 1,
+                            ),
+                            alignment: AlignmentDirectional.topStart,
+                          ),
+                        ],
                       ),
                     ),
                     Card(
