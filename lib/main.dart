@@ -1,5 +1,6 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:flutter/rendering.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:flutter/material.dart';
 
@@ -10,6 +11,11 @@ final List<String> imgList = [
   'https://images.unsplash.com/photo-1519125323398-675f0ddb6308?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=94a1e718d89ca60a6337a6008341ca50&auto=format&fit=crop&w=1950&q=80'
 ];
 
+final List<String> snacksList = [
+  'https://png.pngtree.com/element_our/png_detail/20181207/cartoon-pizza-png_263883.jpg',
+  'https://atlas-content-cdn.pixelsquid.com/stock-images/coffee-cup-small-red-cartoon-w7JZ738-600.jpg',
+  'https://freepngimg.com/thumb/chocolate/7-chocolate-png-image-thumb.png'
+];
 void main() {
   runApp(MyApp());
 }
@@ -23,13 +29,24 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   final controller = PageController(viewportFraction: 0.8, keepPage: true);
   int currentIndex = 0;
+  bool isTaped = true;
+  bool isTaped2 = true;
+  bool isTaped3 = true;
+  // handleTap(bool confirmTap) {
+  //   setState(() {
+  //     isTaped = confirmTap;
+  //   });
+  // }
+
   final CarouselController _controller = CarouselController();
   var FruitList = [
     'Maths,science concepts & more',
     'Unlimited content',
     'New learning modules every day'
   ];
-
+  String quote1 = 'CHEAPER THAN A PIZZA';
+  String quote2 = 'CHEAPER THAN A CUP OF COFFEE';
+  String quote3 = 'CHEAPER THAN A CHOCOLATE';
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -39,7 +56,7 @@ class _MyAppState extends State<MyApp> {
             children: [
               Container(
                 alignment: Alignment.topCenter,
-                padding: EdgeInsets.only(top: 10, bottom: 30),
+                padding: EdgeInsets.only(top: 20, bottom: 30),
                 child: AutoSizeText(
                   'Subscription Plan',
                   textAlign: TextAlign.center,
@@ -135,88 +152,346 @@ class _MyAppState extends State<MyApp> {
                 ),
               ),
               SizedBox(
-                height: 10,
+                height: 20,
               ),
               //Card widget
-              Container(
-                // height: 150,
-                // width: 400,
-                child: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: <Widget>[
-                    Card(
-                      elevation: 5,
-                      //color: Colors.red,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(8),
+              Row(
+                mainAxisSize: MainAxisSize.min,
+                children: <Widget>[
+                  GestureDetector(
+                    onTap: () {
+                      setState(() {
+                        isTaped = false;
+                      });
+                    },
+                    onDoubleTap: () {
+                      setState(() {
+                        isTaped = true;
+                      });
+                    },
+                    child: Listener(
+                      child: Container(
+                        height: 160,
+                        width: 110,
+                        decoration: BoxDecoration(
+                          shape: BoxShape.rectangle,
+                          color: isTaped == true ? Colors.white : Colors.yellow,
+                          border: Border.all(
+                            color: Colors.grey,
+                          ),
+                          borderRadius: BorderRadius.only(
+                              topLeft: Radius.circular(6),
+                              bottomLeft: Radius.circular(6)),
+                        ),
+                        child: Column(
+                          children: [
+                            Container(
+                              //need margin
+                              alignment: Alignment.topCenter,
+                              width: 95,
+                              height: 14,
+                              decoration: BoxDecoration(
+                                shape: BoxShape.rectangle,
+                                color: isTaped == true
+                                    ? Colors.black
+                                    : Colors.green,
+                                borderRadius: BorderRadius.circular(4),
+                              ),
+                              child: AutoSizeText.rich(
+                                TextSpan(
+                                  text: ('RECOMMENDED'),
+                                ),
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 1,
+                                ),
+                                textAlign: TextAlign.right,
+                                maxLines: 1,
+                              ),
+                            ),
+                            Container(
+                              margin: EdgeInsets.only(top: 8, bottom: 6),
+                              child: AutoSizeText.rich(
+                                TextSpan(
+                                  text: '12',
+                                  style: TextStyle(
+                                      fontSize: 26,
+                                      fontWeight: FontWeight.bold,
+                                      fontFamily: 'roboto',
+                                      color: Colors.black),
+                                ),
+                                textAlign: TextAlign.center,
+                              ),
+                            ),
+                            Container(
+                              margin: EdgeInsets.only(bottom: 6),
+                              child: AutoSizeText.rich(
+                                TextSpan(
+                                  text: 'months',
+                                  style: TextStyle(
+                                    fontSize: 12,
+                                    fontWeight: FontWeight.normal,
+                                    fontFamily: 'roboto',
+                                    color: Colors.black,
+                                  ),
+                                ),
+                                textAlign: TextAlign.center,
+                              ),
+                            ),
+                            Container(
+                              margin: EdgeInsets.only(bottom: 4),
+                              child: AutoSizeText.rich(
+                                TextSpan(
+                                  text: '₹499',
+                                  style: TextStyle(
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.black,
+                                    fontFamily: 'roboto',
+                                  ),
+                                ),
+                                textAlign: TextAlign.center,
+                              ),
+                            ),
+                            Container(
+                              child: AutoSizeText.rich(
+                                TextSpan(
+                                  text: '(or₹1/day)',
+                                  style: TextStyle(
+                                    fontSize: 8,
+                                    fontWeight: FontWeight.bold,
+                                    fontFamily: 'roboto',
+                                    color: Colors.lightGreen,
+                                  ),
+                                ),
+                                textAlign: TextAlign.center,
+                              ),
+                            ),
+                            Container(
+                              margin: EdgeInsets.only(top: 12),
+                              child: Icon(
+                                Icons.check_circle,
+                                color: isTaped == true
+                                    ? Colors.black
+                                    : Colors.green,
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
-                      child: Stack(
+                    ),
+                  ),
+                  GestureDetector(
+                    onTap: () {
+                      setState(() {
+                        isTaped2 = false;
+                      });
+                    },
+                    onDoubleTap: () {
+                      setState(() {
+                        isTaped2 = true;
+                      });
+                    },
+                    child: Container(
+                      height: 160,
+                      width: 110,
+                      decoration: BoxDecoration(
+                        shape: BoxShape.rectangle,
+                        color: isTaped2 == true ? Colors.white : Colors.yellow,
+                        border: Border.all(
+                          color: Colors.grey,
+                        ),
+                      ),
+                      child: Column(
                         children: [
                           Container(
-                            width: 100,
-                            height: 14,
-                            decoration: BoxDecoration(
-                              shape: BoxShape.rectangle,
-                              color: Colors.black,
-                              borderRadius: BorderRadius.circular(4),
-                            ),
+                            margin: EdgeInsets.only(top: 22, bottom: 6),
                             child: AutoSizeText.rich(
                               TextSpan(
-                                text: ('RECOMMENDED'),
+                                text: '3',
+                                style: TextStyle(
+                                    fontSize: 26,
+                                    fontWeight: FontWeight.bold,
+                                    fontFamily: 'roboto',
+                                    color: Colors.black),
                               ),
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 0.05,
-                              ),
-                              textAlign: TextAlign.right,
-                              maxLines: 1,
+                              textAlign: TextAlign.center,
                             ),
-                            alignment: AlignmentDirectional.topStart,
+                          ),
+                          Container(
+                            margin: EdgeInsets.only(bottom: 6),
+                            child: AutoSizeText.rich(
+                              TextSpan(
+                                text: 'months',
+                                style: TextStyle(
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.normal,
+                                  fontFamily: 'roboto',
+                                  color: Colors.black,
+                                ),
+                              ),
+                              textAlign: TextAlign.center,
+                            ),
+                          ),
+                          Container(
+                            margin: EdgeInsets.only(bottom: 4),
+                            child: AutoSizeText.rich(
+                              TextSpan(
+                                text: '₹199',
+                                style: TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.black,
+                                  fontFamily: 'roboto',
+                                ),
+                              ),
+                              textAlign: TextAlign.center,
+                            ),
+                          ),
+                          Container(
+                            child: AutoSizeText.rich(
+                              TextSpan(
+                                text: '(or₹2/day)',
+                                style: TextStyle(
+                                  fontSize: 8,
+                                  fontWeight: FontWeight.bold,
+                                  fontFamily: 'roboto',
+                                  color: Colors.black,
+                                ),
+                              ),
+                              textAlign: TextAlign.center,
+                            ),
+                          ),
+                          Container(
+                            margin: EdgeInsets.only(top: 12),
+                            child: Icon(
+                              Icons.check_circle,
+                              color: isTaped2 == true
+                                  ? Colors.black
+                                  : Colors.green,
+                            ),
+                            alignment: Alignment.bottomCenter,
                           ),
                         ],
                       ),
                     ),
-                    Card(
-                      elevation: 5,
-                      //color: Colors.red,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                      child: TextButton(
-                        child: Column(
-                          children: [
-                            Text('12'),
-                            Text('months'),
-                            Text('₹499'),
-                            Text('(or₹1/day)'),
-                          ],
-                        ),
-                        onPressed: () {},
+                  ),
+                  GestureDetector(
+                    onTap: () {
+                      setState(() {
+                        isTaped3 = false;
+                      });
+                    },
+                    onDoubleTap: () {
+                      setState(() {
+                        isTaped3 = true;
+                      });
+                    },
+                    child: Container(
+                      height: 160,
+                      width: 110,
+                      decoration: BoxDecoration(
+                          shape: BoxShape.rectangle,
+                          color:
+                              isTaped3 == true ? Colors.white : Colors.yellow,
+                          border: Border.all(
+                            color: Colors.grey,
+                          ),
+                          borderRadius: BorderRadius.only(
+                              topRight: Radius.circular(6),
+                              bottomRight: Radius.circular(6))),
+                      child: Column(
+                        children: [
+                          Container(
+                            margin: EdgeInsets.only(top: 22, bottom: 6),
+                            child: AutoSizeText.rich(
+                              TextSpan(
+                                text: '1',
+                                style: TextStyle(
+                                    fontSize: 26,
+                                    fontWeight: FontWeight.bold,
+                                    fontFamily: 'roboto',
+                                    color: Colors.black),
+                              ),
+                              textAlign: TextAlign.center,
+                            ),
+                          ),
+                          Container(
+                            margin: EdgeInsets.only(top: 8, bottom: 6),
+                            child: AutoSizeText.rich(
+                              TextSpan(
+                                text: 'months',
+                                style: TextStyle(
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.normal,
+                                  fontFamily: 'roboto',
+                                  color: Colors.black,
+                                ),
+                              ),
+                              textAlign: TextAlign.center,
+                            ),
+                          ),
+                          Container(
+                            margin: EdgeInsets.only(bottom: 4),
+                            child: AutoSizeText.rich(
+                              TextSpan(
+                                text: '₹99',
+                                style: TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.black,
+                                  fontFamily: 'roboto',
+                                ),
+                              ),
+                              textAlign: TextAlign.center,
+                            ),
+                          ),
+                          Container(
+                            margin: EdgeInsets.only(top: 12),
+                            child: Icon(
+                              Icons.check_circle,
+                              color: isTaped3 == true
+                                  ? Colors.black
+                                  : Colors.green,
+                            ),
+                            alignment: Alignment.bottomCenter,
+                          ),
+                        ],
                       ),
                     ),
-                    Card(
-                      elevation: 5,
-                      //color: Colors.red,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(8),
+                  ),
+                ],
+              ),
+              Container(
+                height: 150,
+                child: Column(
+                  children: [
+                    if (isTaped == false)
+                      Image.network(
+                        snacksList[0],
+                        fit: BoxFit.cover,
+                        height: 100,
+                        alignment: Alignment.topCenter,
                       ),
-                      child: TextButton(
-                        child: Column(
-                          children: [
-                            Text('12'),
-                            Text('months'),
-                            Text('₹499'),
-                            Text('(or₹1/day)'),
-                          ],
-                        ),
-                        onPressed: () {},
+                    if (isTaped == false) Text(quote1),
+                    if (isTaped2 == false)
+                      Image.network(
+                        snacksList[1],
+                        fit: BoxFit.cover,
+                        height: 100,
+                        alignment: Alignment.topCenter,
                       ),
-                    ),
+                    if (isTaped2 == false) Text(quote2),
+                    if (isTaped3 == false)
+                      Image.network(
+                        snacksList[2],
+                        fit: BoxFit.cover,
+                        height: 100,
+                        alignment: Alignment.topCenter,
+                      ),
+                    if (isTaped3 == false) Text(quote3),
                   ],
                 ),
-              ),
-              SizedBox(
-                height: 120,
               ),
               Container(
                 child: AutoSizeText.rich(
